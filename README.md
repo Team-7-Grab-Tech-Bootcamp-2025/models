@@ -1,58 +1,89 @@
-# Sentiment Analysis & Classification Pipeline
+# Restaurant Review Analysis & Chatbot System
 
-## Overview
+This repository contains a full pipeline for analyzing restaurant review data, including:
 
-This repository contains scripts and notebooks for processing and analyzing restaurant review data. It utilizes transformer-based models, specifically fine-tuned PhoBERT, to perform sentiment analysis and multi-label classification on Vietnamese textual reviews.
+* Text preprocessing and exploration
+* Fine-tuned PhoBERT-based models for:
 
-## File Descriptions
+  * Sentiment analysis (NEG, NEU, POS)
+  * Multi-label classification (food, service, delivery, price, ambience)
+* A chatbot backend framework for interactive Q\&A on food-related topics
 
-### Notebooks
+## Project Structure
 
-* `data-processing.ipynb`: Contains steps for preprocessing, cleaning, and preparing raw review data for model training and evaluation.
-* `model_training.ipynb`: Includes training procedures, evaluation metrics, and visualization of results for sentiment analysis and review classification models.
+```
+.
+├── data-processing.ipynb        # Data cleaning and preparation notebook
+├── model_training.ipynb         # Notebook for fine-tuning PhoBERT models
+├── pipeline.py                  # Main pipeline script for classification
+├── chatbot/                     # Chatbot backend service
+│   ├── app.py                   # FastAPI app with ngrok integration
+│   ├── config/                  # Configurations and constants
+│   │   ├── constant.py          # Environment and system config
+│   │   ├── model.py             # Pydantic schemas for chat model
+│   │   └── prompt.py            # Prompts used by the chatbot
+│   ├── tool/
+│   │   └── chat_model.py        # ChatClient implementation with ViQwen model
+│   └── utils/
+│       └── logger.py            # Custom logger with timestamp formatting
+└── .gitignore
+```
 
-### Scripts
+## Review Analysis Pipeline
 
-* `pipeline.py`: Implements the entire sentiment and classification pipeline, including sentence segmentation, sentiment prediction, and multi-label classification. The script processes input CSV files containing restaurant reviews and outputs predictions in CSV format.
+* Segment each review into components
+* Predict sentiment per component
+* Assign categories based on content
+* Compute re-rated scores based on sentiment mix
 
-## Models Used
-
-* **Sentiment Analysis:** PhoBERT fine-tuned for sentiment classification (`checkpoint-1100-sentiment`).
-* **Multi-label Classification:** PhoBERT fine-tuned for categorizing reviews into `ambience`, `delivery`, `food`, `price`, and `service` (`checkpoint-510-classification`).
-
-## Usage
-
-Run the pipeline script:
+### Run
 
 ```bash
 python pipeline.py
 ```
 
-Modify input and output CSV paths directly in `pipeline.py`:
+## Chatbot API
 
-```python
-input_csv = "path/to/input_reviews.csv"
-output_csv = "path/to/output_predictions.csv"
+* Built on FastAPI
+* Integrates ViQwen 1.5B model for dialogue generation
+* Supports optional image input
+
+### Run server
+
+```bash
+cd chatbot
+python app.py
+```
+
+Visit: [http://localhost:31456/docs](http://localhost:31456/docs) for Swagger UI
+
+## Environment Variables
+
+```env
+AZURE_OPENAI_ENDPOINT=...
+AZURE_OPENAI_API_KEY=...
+MONGODB_URI=...
+SYSTEM_OS_PATH=...
 ```
 
 ## Requirements
 
-* Python 3.xx
-* pandas
-* torch
-* transformers
-* tqdm
-
-Install dependencies:
-
 ```bash
-pip install pandas torch transformers tqdm
+pip install torch pandas transformers tqdm fastapi uvicorn ngrok rich python-dotenv pillow opencv-python
 ```
 
-## Contributions
+## Model Checkpoints
 
-This project is developed for the Grab Tech Bootcamp 2025, Team 7. Contributions and improvements are welcome.
+| Task                       | Model Name                              |
+| -------------------------- | --------------------------------------- |
+| Sentiment Analysis         | checkpoint-1100-sentiment (PhoBERT)     |
+| Multi-label Classification | checkpoint-510-classification (PhoBERT) |
+| Chatbot Dialogue           | AITeamVN/Vi-Qwen2-1.5B-RAG              |
+
+## Authors
+
+Team 7 – Grab Tech Bootcamp 2025
 
 ---
 
-Team 7 Grab Tech Bootcamp 2025
+© 2025 Team 7 | All rights reserved.
