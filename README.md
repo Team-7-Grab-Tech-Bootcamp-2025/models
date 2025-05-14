@@ -75,15 +75,6 @@ Access the API documentation at: `http://localhost:31456/docs`
 ```bash
 pip install torch pandas transformers tqdm fastapi uvicorn ngrok rich python-dotenv pillow opencv-python
 ```
-
-## Model Checkpoints
-
-| Task                       | Model Name                              |
-| -------------------------- | --------------------------------------- |
-| Sentiment Analysis         | checkpoint-1100-sentiment (PhoBERT)     |
-| Multi-label Classification | checkpoint-510-classification (PhoBERT) |
-| Chatbot Dialogue           | AITeamVN/Vi-Qwen2-1.5B-RAG              |
-
 ## Authors
 
 Team 7 – Grab Tech Bootcamp 2025
