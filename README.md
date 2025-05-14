@@ -1,31 +1,44 @@
 # Restaurant Review Analysis & Chatbot System
 
-This repository contains a full pipeline for analyzing restaurant review data, including:
+This repository contains a pipeline for analyzing restaurant review data, including:
 
 * Text preprocessing and exploration
 * Fine-tuned PhoBERT-based models for:
 
   * Sentiment analysis (NEG, NEU, POS)
   * Multi-label classification (food, service, delivery, price, ambience)
-* A chatbot backend framework for interactive Q\&A on food-related topics
+* A chatbot backend framework using a Vietnamese language model for food-related Q\&A
 
 ## Project Structure
 
 ```
 .
-├── data-processing.ipynb        # Data cleaning and preparation notebook
+├── data-processing.ipynb        # Notebook for data cleaning and preparation
 ├── model_training.ipynb         # Notebook for fine-tuning PhoBERT models
-├── pipeline.py                  # Main pipeline script for classification
+├── pipeline.py                  # Main pipeline script for sentiment and classification
 ├── chatbot/                     # Chatbot backend service
 │   ├── app.py                   # FastAPI app with ngrok integration
-│   ├── config/                  # Configurations and constants
-│   │   ├── constant.py          # Environment and system config
-│   │   ├── model.py             # Pydantic schemas for chat model
-│   │   └── prompt.py            # Prompts used by the chatbot
-│   ├── tool/
-│   │   └── chat_model.py        # ChatClient implementation with ViQwen model
+│   ├── config/
+│   │   ├── constant.py
+│   │   ├── model.py
+│   │   └── prompt.py
+│   ├── module/
+│   │   ├── graph/
+│   │   │   ├── agent.py
+│   │   │   ├── nodes.py
+│   │   │   └── tools.py
+│   │   ├── rabbitmq/
+│   │   │   ├── message_handler.py
+│   │   │   └── message_listener.py
+│   │   ├── storage/
+│   │   │   ├── blob.py
+│   │   │   └── checkpointer.py
+│   │   └── tool/
+│   │       ├── code_interpreter.py
+│   │       ├── helper.py
+│   │       └── chat_model.py
 │   └── utils/
-│       └── logger.py            # Custom logger with timestamp formatting
+│       └── logger.py
 └── .gitignore
 ```
 
@@ -34,7 +47,7 @@ This repository contains a full pipeline for analyzing restaurant review data, i
 * Segment each review into components
 * Predict sentiment per component
 * Assign categories based on content
-* Compute re-rated scores based on sentiment mix
+* Compute adjusted scores based on sentiment balance
 
 ### Run
 
@@ -44,27 +57,18 @@ python pipeline.py
 
 ## Chatbot API
 
-* Built on FastAPI
-* Integrates ViQwen 1.5B model for dialogue generation
-* Supports optional image input
+* Built with FastAPI
+* Uses a Vietnamese language model from Hugging Face for Q\&A
+* Accepts optional image uploads
 
-### Run server
+### Run Server
 
 ```bash
 cd chatbot
 python app.py
 ```
 
-Visit: [http://localhost:31456/docs](http://localhost:31456/docs) for Swagger UI
-
-## Environment Variables
-
-```env
-AZURE_OPENAI_ENDPOINT=...
-AZURE_OPENAI_API_KEY=...
-MONGODB_URI=...
-SYSTEM_OS_PATH=...
-```
+Access the API documentation at: `http://localhost:31456/docs`
 
 ## Requirements
 
@@ -83,7 +87,3 @@ pip install torch pandas transformers tqdm fastapi uvicorn ngrok rich python-dot
 ## Authors
 
 Team 7 – Grab Tech Bootcamp 2025
-
----
-
-© 2025 Team 7 | All rights reserved.
