@@ -68,7 +68,7 @@ cd chatbot
 python app.py
 ```
 
-Access the API documentation at: `http://localhost:31456/docs`
+Access the API documentation at: `[chatbot](https://precious-needed-bug.ngrok-free.app/docs#/Chat/chat_chat_post)`
 
 ## Requirements
 
